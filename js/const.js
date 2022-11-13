@@ -1,6 +1,6 @@
 
-var female_faces = Array.from(Array(50).keys())
-var male_faces = Array.from(Array(50).keys())
+var female_faces = Array.from(Array(100).keys())
+var male_faces = Array.from(Array(100).keys())
 
 var genders = [
     "F", "F", "F", "F", "F", "F", "F", "F",
