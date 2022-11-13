@@ -2,7 +2,10 @@
 var female_faces = Array.from(Array(50).keys())
 var male_faces = Array.from(Array(50).keys())
 
-var genders = ["F", "F", "F", "F", "F", "M", "M", "M", "M", "M"];
+var genders = [
+    "F", "F", "F", "F", "F", "F", "F", "F",
+    "M", "M", "M", "M", "M", "M", "M", "M"
+];
 
 var male_names = [
     "Abel",

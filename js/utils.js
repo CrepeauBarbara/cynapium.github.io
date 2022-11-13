@@ -5,6 +5,7 @@ var people = [];
 // 0: Memorization ; 1: Recall ; 2: Results
 var phase = 0;
 
+var nb_faces = 15;
 var counter_mem = 30;
 var counter_recall = 300;
 
@@ -20,9 +21,9 @@ function initMemorization() {
     shuffle(male_faces);
     shuffle(genders);
 
-    // Get informations of 10 generated people
+    // Get informations of all generated people
     people = [];
-    for (var i = 0 ; i < 10 ; i++) {
+    for (var i = 0 ; i < nb_faces ; i++) {
         if (genders[i] == "F") {
             var person_name = female_names[i];
             var person_id = String(female_faces[i]).padStart(3, '0');
@@ -40,6 +41,7 @@ function initMemorization() {
     updatePeopleView(people);
 
     $("#getStarted").click(function() {
+        initMemorization();
         getStarted(-1);
     });
 }
@@ -49,7 +51,7 @@ function initMemorization() {
  * @people_list list<map<str, str>> - Array of people's name and face.
  */
 function updatePeopleView(people_list) {
-    for (var i = 0 ; i < 10 ; i++) {
+    for (var i = 0 ; i < nb_faces ; i++) {
         $( "#p" + i ).find($("img")).attr('src', people_list[i]["face"]);
         $( "#p" + i ).find($(".person_name div")).text(people_list[i]["name"]);
     }
@@ -133,7 +135,7 @@ function checkResults() {
     var all_faces = [];
     var score = 0;
 
-    for (var i = 0 ; i < 10 ; i++) {
+    for (var i = 0 ; i < nb_faces ; i++) {
         var person_item = $("#p" + i);
         var expected_name = people[i]["name"];
         var recalled_name = person_item.find(".person_name input").val();
@@ -166,7 +168,7 @@ function checkResults() {
 
     // Update view
     $("#results_container").show();
-    $("#score_label").html("Score: " + score + "/10");
+    $("#score_label").html("Score: " + score + "/" + nb_faces);
     $("#update_user").click(function(e) {
         updateUser($("#user_name").val(), $("#user_email").val(), score, gameKey);
         return false;
