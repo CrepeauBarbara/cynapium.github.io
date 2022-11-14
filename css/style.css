@@ -141,6 +141,14 @@ a,
 
 /** BARBARA **/
 
+h3 {
+    text-transform: uppercase!important;
+    font-weight: bold!important;
+    text-align: center;
+    color: rgb(126, 126, 126);
+    z-index: 100;
+}
+
 .person_item {
   width: 20%;
   float: left;
@@ -235,6 +243,10 @@ a,
  .results_section {
     padding-top: 0px!important;
     margin-top: -50px;
+ }
+ .results_section .link {
+    color: #1b649a;
+    text-decoration: underline!important;
  }
 
 /** Success **/

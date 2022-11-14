@@ -19,7 +19,7 @@ const firebaseConfig = {
     measurementId: "G-4N7TFSKQT7"
 };
 
-var all_users = []
+var all_users = [];
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -38,6 +38,7 @@ export function updateUser(user_name, user_email, score, gameKey) {
     return update(ref(db), updates);
 }
 
+/*
 export function getAllScores() {
     const users = getAllUsers();
         console.log("==============");
@@ -57,6 +58,74 @@ export function getAllScores() {
         }, 500);
         resolve(users);
     });
+}
+*/
+
+export function getAllScores(current_score) {
+    const games = getAllGames();
+    console.log("==============");
+                console.log(games);
+
+    let p = new Promise(resolve => {
+        setTimeout(() => {
+            var scores = Array(16).fill(0);
+            for(var i = 0 ; i < games.length ; i++) {
+                scores[games[i].score]++;
+            }
+
+            console.log(scores);
+            populateScoreChart(scores, current_score);
+        }, 1000);
+        resolve(games);
+    });
+    console.log("==============");
+}
+
+function populateScoreChart(scores, score_user) {
+    var tester = document.getElementById('score_chart');
+
+    var labels = Array.from(Array(16).keys());
+    scores = [10, 21, 136, 341, 508, 690, 530, 420, 304, 146, 98, 75, 55, 20, 8, 1]
+    var bar_colors = Array(16).fill("rgba(27, 100, 154, 0.7)");
+    bar_colors[score_user] = "#008708";
+
+    var trace1 = {
+        type: 'bar',
+        x: labels,
+        y: scores,
+
+        marker: {
+          color: bar_colors,
+          line: {
+              color: "rgba(27, 100, 154, 1)",
+              width: 1
+          }
+      },
+    };
+
+    var data = [ trace1 ];
+    var layout = {
+        font: {size: 16},
+        width: 600,
+        height: 310,
+    };
+
+    var config = {responsive: true}
+    Plotly.newPlot(tester, data, layout, config);
+}
+
+export function getAllGames() {
+    const db = getDatabase();
+
+    var all_games = [];
+
+    get(child(ref(db), `games/`)).then((snapshot) => {
+        snapshot.forEach((child) => {
+            all_games.push(child.val());
+        });
+    });
+
+    return all_games;
 }
 
 export function getAllUsers() {
@@ -136,7 +205,6 @@ export function writeNewGame(user_uid, timestamp, score, expected, recalled, fac
     //const updates = {};
     //updates['/games/' + newGameKey] = gameData;
     //updates['/users/' + user_uid + '/games/' + newGameKey] = gameData;
-    console.log("===========================");
 
     //return update(ref(db), updates);
 

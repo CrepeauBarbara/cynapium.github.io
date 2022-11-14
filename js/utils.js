@@ -152,7 +152,7 @@ function checkResults() {
         person_item.find(".person_name div").html(recalled_name);
 
         // Get result and add recalled incorrect name in hover
-        if (expected_name == recalled_name) {
+        if (expected_name.toLowerCase() == recalled_name.toLowerCase()) {
             person_item.addClass("result_success");
             score++;
         } else {
@@ -160,8 +160,6 @@ function checkResults() {
             person_item.append("<div class='person_name reveal_hover'><div class='expected_response'>" + expected_name + "</div></div>");
         }
     }
-
-    console.log("===========================");
 
     var timestamp = Math.floor(Date.now() / 1000);
     var gameKey = writeNewGame("u0", timestamp, score, all_expected, all_recalled, all_faces);
@@ -173,7 +171,7 @@ function checkResults() {
         updateUser($("#user_name").val(), $("#user_email").val(), score, gameKey);
         return false;
     });
-    getAllScores();
+    getAllScores(score);
 }
 
 function str_pad_left(string,pad,length) {
@@ -215,6 +213,7 @@ function startInterval() {
 function stopInterval() {
     clearInterval(timer);
 }
+
 
 $( document ).ready(function() {
     $( "#results_container" ).hide();

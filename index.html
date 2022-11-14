@@ -30,6 +30,7 @@
         <!--<link rel="stylesheet" href="css/owl.carousel.min.css"/>-->
         <link rel="stylesoeet" href="css/owl.theme.default.min.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen"/>
+         <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
     </head>
    <body>
 
@@ -134,37 +135,28 @@
             <div class="container-fluid">
                 <h2 id="score_label" class="clean_text" style="font-weight: bold;">Score: </h2>
                 <br/>
-                <div id="scoreboard">&nbsp;</div>
-                <br/>
-                <div class="row">
-                    <div class="col-md-3" style="font-size: 18px;">
-                        Enregistre ton score:
-                    </div>
-                    <div class="col-md-3">
-                        <input id="user_name" type="text" placeholder="username" size="10"/>
-                    </div>
-                    <div class="col-md-3">
-                        <input id="user_email" type="text" placeholder="email" size="17"/>
-                    </div>
-                    <div class="col-md-3">
-                        <div id="update_user" class="quote_bt_1"><a href="#" style="padding: 0;">Enregistre</a></div>
-                    </div>
-                </div>
-                <br/>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quam urna, imperdiet vel convallis vitae, ullamcorper ut magna. Etiam euismod velit at risus ullamcorper rhoncus. Donec sem justo, rutrum non enim ac, accumsan bibendum felis. Pellentesque finibus eget orci vitae mattis. Curabitur eget laoreet tellus, sit amet auctor arcu. Nullam et justo egestas mauris molestie tincidunt. Praesent varius interdum feugiat. Sed suscipit blandit tortor ac elementum. Duis molestie iaculis orci, in mattis arcu interdum in. Nulla et mollis risus. Sed mattis magna eget elit efficitur varius. Morbi non risus id nisi gravida ornare vitae eget orci. Duis nec sollicitudin massa. Aliquam erat volutpat. In hac habitasse platea dictumst.
-                <br/><br/>
-                Phasellus nisl lorem, elementum quis metus quis, vestibulum vulputate ligula. Praesent tempus enim faucibus, efficitur orci a, suscipit augue. Suspendisse in est vitae metus tempus rutrum. Curabitur dictum hendrerit porta. Vestibulum tincidunt nisl vitae augue viverra aliquam. Phasellus pellentesque, libero eu sagittis ultricies, felis est pretium sem, ut pharetra libero arcu a orci. Sed non tortor nec tellus mattis condimentum at ut justo. Sed eget turpis velit. Vestibulum scelerisque est egestas malesuada ultricies. Nulla pellentesque elementum aliquam. Proin eget purus ac arcu volutpat iaculis nec mollis orci. Proin enim sapien, eleifend euismod sem non, tempus pretium diam.
-                <br/><br/>
                 <!--<div class="quote_bt_1"><a href="#">Improve your score!</a></div>
                 <div class="quote_bt_1"><a href="#">Share</a></div>-->
 
 
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="quote_bt_1" style="width: 300px;"><a href="#">Improve your score!</a></div>
+                    <div class="col-md-8">
+                        <h3 style="margin-bottom: -50px;">Statistics</h3>
+                        <div id="score_chart" style="width:600px; height:250px;"></div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="quote_bt_1"><a href="#">Share</a></div>
+                    <div class="col-md-4">
+                        <p style="margin: 0px">
+                            <a class="link" href="#">Log in or create an account</a> to link your stats, get
+                            exclusive memory improvement tips and play other mini-games!
+                        </p>
+                        <br/>
+                        <div class="quote_bt_1" style="width: 300px; margin-bottom: 70px;">
+                            <a href="index.html">Improve your score!</a>
+                        </div>
+                        <br/>
+                        <div class="quote_bt_1" style="margin-bottom: 70px;">
+                            <a href="#">Share</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -184,7 +176,6 @@
     <script src="js/const.js"></script>
     <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="js/custom.js"></script>
-
     <script type="module" src="js/firebase.js"/></script>
 
     <script type="module" src="js/utils.js"></script>
