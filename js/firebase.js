@@ -110,7 +110,10 @@ function populateScoreChart(scores, score_user) {
         height: 310,
     };
 
-    var config = {responsive: true}
+    var config = {
+        responsive: true,
+        displayModeBar: false
+    }
     Plotly.newPlot(tester, data, layout, config);
 }
 

@@ -103,7 +103,7 @@ function startRecall() {
     updatePeopleView(people);
 
     // Switch the labels to input and give focus to the first one
-    $( ".person_name div" ).html("<input type='text' name='field_name[]' value=''/>")
+    $( ".person_name div" ).html("<input type='text' data-lpignore='true' value=''/>")
     $( "#first input" ).focus();
 
     // Update the timer
