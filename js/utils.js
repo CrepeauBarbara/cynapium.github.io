@@ -40,7 +40,8 @@ function initMemorization() {
     // Update view
     updatePeopleView(people);
 
-    $("#getStarted").click(function() {
+    $("#linkGetStarted").click(function() {
+        console.log("ok");
         initMemorization();
         getStarted(-1);
     });
@@ -174,10 +175,6 @@ function checkResults() {
         return false;
     });
     getAllScores(score);
-
-    $("#btnShare").click(function(e) {
-        gtag('event', 'share');
-    });
 }
 
 function str_pad_left(string,pad,length) {
