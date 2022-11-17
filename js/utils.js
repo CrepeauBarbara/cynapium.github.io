@@ -174,6 +174,10 @@ function checkResults() {
         return false;
     });
     getAllScores(score);
+
+    $("#btnShare").click(function(e) {
+        gtag('event', 'share');
+    });
 }
 
 function str_pad_left(string,pad,length) {
