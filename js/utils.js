@@ -6,7 +6,7 @@ var people = [];
 var phase = 0;
 
 var nb_faces = 15;
-var counter_mem = 30;
+var counter_mem = 3;
 var counter_recall = 300;
 
 /**
@@ -15,8 +15,8 @@ var counter_recall = 300;
  */
 function initMemorization() {
     // Shuffle arrays to get names, faces and genders in random order
-    shuffle(female_names);
-    shuffle(male_names);
+    shuffle(FR_female_names);
+    shuffle(FR_male_names);
     shuffle(female_faces);
     shuffle(male_faces);
     shuffle(genders);
@@ -25,11 +25,11 @@ function initMemorization() {
     people = [];
     for (var i = 0 ; i < nb_faces ; i++) {
         if (genders[i] == "F") {
-            var person_name = female_names[i];
+            var person_name = FR_female_names[i];
             var person_id = String(female_faces[i]).padStart(3, '0');
             var person_face = 'images/faces/females/' + genders[i] + "-" + person_id + ".jpeg";
         } else {
-            var person_name = male_names[i];
+            var person_name = FR_male_names[i];
             var person_id = String(male_faces[i]).padStart(3, '0');
             var person_face = 'images/faces/males/' + genders[i] + "-" + person_id + ".jpeg";
         }
@@ -152,7 +152,9 @@ function checkResults() {
         person_item.find(".person_name div").html(recalled_name);
 
         // Get result and add recalled incorrect name in hover
-        if (expected_name.toLowerCase() == recalled_name.toLowerCase()) {
+        var expected_name_normalized = expected_name.normalize('NFD').replace(/\p{Diacritic}/gu, "");
+        var recalled_name_normalized = recalled_name.normalize('NFD').replace(/\p{Diacritic}/gu, "");
+        if (expected_name_normalized.toLowerCase() == recalled_name_normalized.toLowerCase()) {
             person_item.addClass("result_success");
             score++;
         } else {
