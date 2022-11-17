@@ -43,7 +43,6 @@ function initMemorization() {
     $("#getStarted").click(function() {
         initMemorization();
         getStarted(-1);
-    });
 }
 
 /**
