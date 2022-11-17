@@ -6,8 +6,8 @@ var people = [];
 var phase = 0;
 
 var nb_faces = 15;
-var counter_mem = 3;
-var counter_recall = 300;
+var counter_mem = 30;
+var counter_recall = 120;
 
 /**
  * Initialize the memorization data. Called at the end of this file, when

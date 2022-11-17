@@ -98,6 +98,7 @@ function populateScoreChart(scores, score_user) {
         type: 'bar',
         x: labels,
         y: stats_scores,
+        text: stats_scores.map(String),
 
         marker: {
             color: bar_colors,
@@ -134,7 +135,7 @@ function populateScoreChart(scores, score_user) {
         responsive: true,
         displayModeBar: false,
         staticPlot: true,
-        autosize: true
+        autosize: true,
     }
     Plotly.newPlot(tester, data, layout, config);
 }
