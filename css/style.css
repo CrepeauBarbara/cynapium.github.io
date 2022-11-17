@@ -249,6 +249,14 @@ h3 {
     text-decoration: underline!important;
  }
 
+ @media only screen and (max-width: 576px) {
+    #score_chart { margin-left: -50px; }
+ }
+  @media only screen and (max-width: 990px) {
+     #score_chart { margin-left: -35px; }
+  }
+
+
 /** Success **/
 .result_success .image_1 { border: 2px solid #008708; }
 .result_success .person_name div { background-color: #008708; color: white; }
@@ -676,7 +684,7 @@ img.padding_right_10 {
     margin: 0px;
 }
 .quote_bt_1{
-    width: 170px;
+    width: 200px;
     margin: 0 auto;
     text-align: center;
 }

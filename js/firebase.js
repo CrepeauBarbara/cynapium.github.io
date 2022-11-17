@@ -63,7 +63,6 @@ export function getAllScores() {
 
 export function getAllScores(current_score) {
     const games = getAllGames();
-    console.log("==============");
                 console.log(games);
 
     let p = new Promise(resolve => {
@@ -78,41 +77,64 @@ export function getAllScores(current_score) {
         }, 1000);
         resolve(games);
     });
-    console.log("==============");
 }
 
 function populateScoreChart(scores, score_user) {
     var tester = document.getElementById('score_chart');
 
     var labels = Array.from(Array(16).keys());
-    scores = [10, 21, 136, 341, 508, 690, 530, 420, 304, 146, 98, 75, 55, 20, 8, 1]
+    console.log(scores);
+    var preset_scores = [0, 10, 45, 73, 178, 259, 341, 274, 214, 152, 73, 49, 27, 10, 4, 1];
     var bar_colors = Array(16).fill("rgba(27, 100, 154, 0.7)");
     bar_colors[score_user] = "#008708";
+
+
+
+    var stats_scores = preset_scores.map(function (num, idx) {
+        return num + scores[idx];
+    });
 
     var trace1 = {
         type: 'bar',
         x: labels,
-        y: scores,
+        y: stats_scores,
 
         marker: {
-          color: bar_colors,
-          line: {
-              color: "rgba(27, 100, 154, 1)",
-              width: 1
-          }
-      },
+            color: bar_colors,
+            line: {
+                color: "rgba(27, 100, 154, 1)",
+                width: 1
+            }
+        },
     };
+
+    var window_width = window.innerWidth;
+    console.log("WW: " + window_width);
+    var chart_width = 600;
+    var chart_height = 300;
+    if (window_width < 575) {
+        chart_width = 400;
+        chart_height = 300;
+    } else if (window_width < 767) {
+        chart_width = 500;
+        chart_height = 300;
+    } else if (window_width < 990) {
+        chart_width = 500;
+        chart_height = 300;
+    }
 
     var data = [ trace1 ];
     var layout = {
         font: {size: 16},
-        width: 600,
-        height: 310,
+        width: chart_width,
+        height: chart_height,
     };
 
     var config = {
         responsive: true,
-        displayModeBar: false
+        displayModeBar: false,
+        staticPlot: true,
+        autosize: true
     }
     Plotly.newPlot(tester, data, layout, config);
 }
