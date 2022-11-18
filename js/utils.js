@@ -1,4 +1,12 @@
-import { writeNewGame, updateUser, getAllScores } from "./firebase.js"
+import {
+    //writeNewGame,
+    //updateUser,
+    getAllScores,
+    writeNewSession,
+    writeNewSessionGame,
+    updateGame,
+    updateGameClicks,
+} from "./firebase.js"
 
 var people = [];
 
@@ -6,14 +14,45 @@ var people = [];
 var phase = 0;
 
 var nb_faces = 15;
-var counter_mem = 30;
-var counter_recall = 120;
+var COUNTER_MEMORIZATION_PHASE = 30;
+var COUNTER_RECALL_PHASE = 120;
+
+var session_id = -1;
+var game_counter = 0;
+var best_session_score = -1;
+
+/******************************************************************************
+ *                                 INTRO PHASE                                *
+ ******************************************************************************/
+
+ function startGame() {
+    // Write new session to database
+    var timestamp = Math.floor(Date.now() / 1000);
+    session_id = writeNewSession(timestamp);
+
+    // Add click listener on "Get Started"
+    $("#linkGetStarted").unbind('click').click(function() {
+        startMemorizing();
+    });
+
+    //
+    initMemorization();
+ }
 
 /**
  * Initialize the memorization data. Called at the end of this file, when
  * the document is ready.
  */
 function initMemorization() {
+    console.log("> initMemorization");
+    // Show instructions if it was hidden
+    $( "#instructions" ).show();
+    $( ".title" ).html("Memorization");
+    $( "#timer" ).show();
+
+    $( "#results_container" ).hide();
+    $(".person_item").css({ opacity: 0 });
+
     // Shuffle arrays to get names, faces and genders in random order
     shuffle(FR_female_names);
     shuffle(FR_male_names);
@@ -36,15 +75,8 @@ function initMemorization() {
 
         people.push({"uid": person_id, "face": person_face, "name": person_name});
     }
-
     // Update view
     updatePeopleView(people);
-
-    $("#linkGetStarted").click(function() {
-        console.log("ok");
-        initMemorization();
-        getStarted(-1);
-    });
 }
 
 /**
@@ -53,53 +85,58 @@ function initMemorization() {
  */
 function updatePeopleView(people_list) {
     for (var i = 0 ; i < nb_faces ; i++) {
-        $( "#p" + i ).find($("img")).attr('src', people_list[i]["face"]);
-        $( "#p" + i ).find($(".person_name div")).text(people_list[i]["name"]);
+        var person_item = $( "#p" + i );
+        person_item.removeClass("result_success");
+        person_item.removeClass("result_failure");
+
+        person_item.find($("img")).attr('src', people_list[i]["face"]);
+        person_item.find($(".person_name div")).text(people_list[i]["name"]);
+
+        $(".reveal_hover").remove();
     }
 }
 
-/**
- * Start the memorization phase with timer. Called from "Get Started" button in
- * instructions panel.
- * @counter_value int - Timeout counter in seconds
- */
-function getStarted(counter_value) {
-    startInterval();
-    if (counter_value > 0) {
-        counter = counter_value;
-    }
-    prettyPrintTimer();
+
+/******************************************************************************
+ *                              MEMORIZATION PHASE                            *
+ ******************************************************************************/
+
+ /**
+  * Start the recall phase by reseting the timer to 300 seconds, shuffling the
+  * people and replacing all of their names by input fields.
+  */
+function startMemorizing() {
+    console.log("> startMemorizing");
+    phase = 0;
+    // Update game phase
+    game_counter++;
+    var timestamp = Math.floor(Date.now() / 1000);
+    var game_id = writeNewSessionGame(session_id, game_counter, timestamp);
+
+    // Start the timer
+    getStarted(COUNTER_MEMORIZATION_PHASE);
+
+    // Show faces and hide instructions
+    $(".person_item").css({ opacity: 1 });
     $( "#instructions" ).hide();
 }
 
-/**
- * Shuffle the given array.
- */
-function shuffle(array) {
-  let currentIndex = array.length,  randomIndex;
 
-  // While there remain elements to shuffle.
-  while (currentIndex != 0) {
-
-    // Pick a remaining element.
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex], array[currentIndex]];
-  }
-
-  return array;
-}
+/******************************************************************************
+ *                                RECALL PHASE                                *
+ ******************************************************************************/
 
 /**
  * Start the recall phase by reseting the timer to 300 seconds, shuffling the
  * people and replacing all of their names by input fields.
  */
 function startRecall() {
+    console.log("> startRecall");
+    // Update the game's phase
     phase = 1;
-    // Shuffle people
+    updateGame(session_id, game_counter, phase, -1);
+
+    // Shuffle people and update the view
     shuffle(people);
     updatePeopleView(people);
 
@@ -109,14 +146,19 @@ function startRecall() {
 
     // Update the timer
     $( ".title" ).html("Recall");
-    getStarted(counter_recall);
+    getStarted(COUNTER_RECALL_PHASE);
 
     // Init button to check results before end of timer
     $("#btn_results").show();
-    $("#btn_results").click(function(e) {
+    $("#linkCheckResults").unbind('click').click(function(e) {
+        updateGameClicks(session_id, game_counter, "Results");
         checkResults();
     });
 }
+
+/******************************************************************************
+ *                                RESULTS PHASE                               *
+ ******************************************************************************/
 
 /**
  * End the recall phase and check the results.
@@ -130,6 +172,7 @@ function checkResults() {
     $("#timer").hide();
     $("#btn_results").hide();
     $("#text_results").show();
+    $("#shared").hide();
 
     var all_expected = [];
     var all_recalled = [];
@@ -164,26 +207,68 @@ function checkResults() {
         }
     }
 
-    var timestamp = Math.floor(Date.now() / 1000);
-    var gameKey = writeNewGame("u0", timestamp, score, all_expected, all_recalled, all_faces);
+    // Display best score
+    if (best_session_score < score) {
+        best_session_score = score;
+    }
+    $("#best_score_label").html(best_session_score);
+
+    // Update the game's phase
+    updateGame(session_id, game_counter, phase, score);
+
+    getAllScores(score, best_session_score);
+
+    //var timestamp = Math.floor(Date.now() / 1000);
+    //var gameKey = writeNewGame("u0", timestamp, score, all_expected, all_recalled, all_faces);
 
     // Update view
     $("#results_container").show();
     $("#score_label").html("Score: " + score + "/" + nb_faces);
-    $("#update_user").click(function(e) {
+    $("#update_user").unbind('click').click(function(e) {
         updateUser($("#user_name").val(), $("#user_email").val(), score, gameKey);
         return false;
     });
-    getAllScores(score);
+    $("#linkImprove").unbind('click').click(function(e) {
+        updateGameClicks(session_id, game_counter, "Improve");
+        initMemorization();
+    });
+    $("#linkShare").unbind('click').click(function(e) {
+        share();
+        updateGameClicks(session_id, game_counter, "Share");
+    });
 }
+
+function share() {
+    $("#shared").show();
+
+}
+
+/******************************************************************************
+ *                                   UTILS                                    *
+ ******************************************************************************/
 
 function str_pad_left(string,pad,length) {
     return (new Array(length+1).join(pad)+string).slice(-length);
 }
 
-var counter = counter_mem;
+var counter = COUNTER_MEMORIZATION_PHASE;
 var timer = null;
 
+/**
+ * Start the memorization phase with timer. Called from "Get Started" button in
+ * instructions panel.
+ * @counter_value int - Timeout counter in seconds
+ */
+
+function getStarted(counter_value) {
+
+    // Start the timer
+    startInterval();
+    if (counter_value > 0) {
+        counter = counter_value;
+    }
+    prettyPrintTimer();
+}
 
 function prettyPrintTimer() {
     var minutes = Math.floor(counter / 60);
@@ -198,8 +283,8 @@ function reset() {
 }
 
 function startInterval() {
-    timer = setInterval(function(){
-
+    timer = setInterval(
+        function() {
             counter--;
             prettyPrintTimer();
 
@@ -211,14 +296,43 @@ function startInterval() {
                     checkResults();
                 }
             }
-    }, 1000);
+        },
+        1000
+    );
 }
 function stopInterval() {
     clearInterval(timer);
 }
 
+/**
+ * Shuffle the given array.
+ */
+function shuffle(array) {
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+
+/******************************************************************************
+ *                             WHEN DOCUMENT READY                            *
+ ******************************************************************************/
 
 $( document ).ready(function() {
+    // Hide result container
     $( "#results_container" ).hide();
-    initMemorization();
+
+    // Intialize all the memorization phase in advance
+    startGame();
 });

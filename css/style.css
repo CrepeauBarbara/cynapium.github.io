@@ -141,6 +141,8 @@ a,
 
 /** BARBARA **/
 
+b, strong { font-weight: bold; }
+
 h3 {
     text-transform: uppercase!important;
     font-weight: bold!important;
@@ -154,6 +156,7 @@ h3 {
   float: left;
   position: relative;
   padding: 15px;
+  opacity: 0;
 }
 @media only screen and (max-width: 767px) {
   .person_item { width: 50%; }
