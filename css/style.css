@@ -112,7 +112,7 @@ li,
 ol {
      margin: 0px;
      padding: 0px;
-     list-style: none;
+     list-style: disc;
 }
 
 p {
@@ -142,6 +142,14 @@ a,
 /** BARBARA **/
 
 b, strong { font-weight: bold; }
+
+ul {
+    margin: 20px;
+    list-style: disc!important;
+}
+li {
+    margin-bottom: 10px;
+}
 
 h3 {
     text-transform: uppercase!important;
@@ -365,7 +373,7 @@ button {
 .contact_menu ul{
     margin: 0px;
     padding: 0px;
-    list-style: none;
+    list-style: disc;
     text-align: center;
 }
 .contact_menu li{
