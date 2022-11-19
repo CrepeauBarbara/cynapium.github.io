@@ -20,6 +20,8 @@ var COUNTER_RECALL_PHASE = 120;
 var session_id = -1;
 var game_counter = 0;
 var best_session_score = -1;
+var score_bracket = -1;
+var clipboard = undefined;
 
 /******************************************************************************
  *                                 INTRO PHASE                                *
@@ -33,6 +35,9 @@ var best_session_score = -1;
     // Add click listener on "Get Started"
     $("#linkGetStarted").unbind('click').click(function() {
         startMemorizing();
+        $("#shareable_text").text($("#shareable_text").text().replace("[score]", "5"));
+        $("#shareable_text").text($("#shareable_text").text().replace("[score_bracket]", "52"));
+        console.log("replaced!");
     });
 
     //
@@ -52,6 +57,9 @@ function initMemorization() {
 
     $( "#results_container" ).hide();
     $(".person_item").css({ opacity: 0 });
+
+    // Kill the clipboard listener from previous games
+    if (clipboard !== undefined) { clipboard.destroy(); }
 
     // Shuffle arrays to get names, faces and genders in random order
     shuffle(FR_female_names);
@@ -218,6 +226,13 @@ function checkResults() {
 
     getAllScores(score, best_session_score);
 
+    clipboard = new ClipboardJS('#linkShare', {
+            text: function (trigger) {
+                return `Try to beat my score at memory-challenge.com:
+  🏆 ` + best_session_score + ` people recognized out of 15!`;
+            },
+        });
+
     //var timestamp = Math.floor(Date.now() / 1000);
     //var gameKey = writeNewGame("u0", timestamp, score, all_expected, all_recalled, all_faces);
 
@@ -240,7 +255,6 @@ function checkResults() {
 
 function share() {
     $("#shared").show();
-
 }
 
 /******************************************************************************
@@ -325,6 +339,9 @@ function shuffle(array) {
   return array;
 }
 
+function copyToClipboard(copyText) {
+}
+
 /******************************************************************************
  *                             WHEN DOCUMENT READY                            *
  ******************************************************************************/
@@ -335,4 +352,5 @@ $( document ).ready(function() {
 
     // Intialize all the memorization phase in advance
     startGame();
+    copyToClipboard("Shared!");
 });
