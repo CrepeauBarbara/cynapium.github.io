@@ -24,20 +24,6 @@ var all_users = [];
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-export function updateUser(user_name, user_email, score, gameKey) {
-    const db = getDatabase();
-
-    var user_key = writeNewUser(user_name, user_email, score);
-
-    const updates = {};
-    //updates['/users/' + user_uuid + '/email'] = user_email;
-    //updates['/users/' + user_uuid + '/name'] = user_name;
-    updates['/game/' + gameKey + '/user'] = user_key;
-
-    getAllScores();
-    return update(ref(db), updates);
-}
-
 export function getAllScores(current_score, best_score_user) {
     const games = getAllGames();
 
@@ -152,91 +138,6 @@ export function getAllGames() {
     return all_games;
 }
 
-export function getAllUsers() {
-    const db = getDatabase();
-
-    var all_users = [];
-
-    get(child(ref(db), `users/`)).then((snapshot) => {
-        snapshot.forEach((child) => {
-            all_users.push(child.val());
-        });
-    });
-
-    return all_users;
-}
-
-export function getUserBestScore(user_uid) {
-    const db = getDatabase();
-
-    get(child(ref(db), `users/` + user_uid + '/highest_score')).then((snapshot) => {
-        console.log(snapshot.val());
-    });
-
-    return 0;
-}
-
-export function writeNewUser(username, email, score, gameKey) {
-    console.log(">> writeNewUser (D)");
-    const db = getDatabase();
-    // A post entry.
-    const userData = {
-        name: username,
-        email: email,
-        highest_score: score
-    };
-
-    // Get a key for a new Game.
-    const newKey = push(child(ref(db), 'users')).key;
-
-    set(ref(db, 'users/' + newKey), userData)
-    .then(() => {
-        console.log("success");
-    })
-    .catch((error) => {
-        console.log("error");
-        console.log(error);
-    });
-    return newKey;
-}
-
-export function writeNewGame(user_uid, timestamp, score, expected, recalled, faces) {
-    console.log(">> writeNewGame (D)");
-    const db = getDatabase();
-
-    // A post entry.
-    const gameData = {
-        user: user_uid,
-        timestamp: timestamp,
-        score: score,
-        expected: expected,
-        recalled: recalled,
-        faces: faces
-    };
-
-    // Get a key for a new Game.
-    const newGameKey = push(child(ref(db), 'games')).key;
-
-    set(ref(db, 'games/' + newGameKey), gameData)
-    .then(() => {
-        console.log("success");
-    })
-    .catch((error) => {
-        console.log("error");
-        console.log(error);
-    });
-
-
-    // Write the new game's data simultaneously in the games list and the user's post list.
-    //const updates = {};
-    //updates['/games/' + newGameKey] = gameData;
-    //updates['/users/' + user_uid + '/games/' + newGameKey] = gameData;
-
-    //return update(ref(db), updates);
-
-    return newGameKey;
-}
-
 export function writeNewSession(timestamp) {
     console.log(">> writeNewSession");
     const db = getDatabase();
@@ -300,15 +201,11 @@ export function updateGame(session_id, game_number, phase, score) {
     console.log(">> updateGame");
     const db = getDatabase();
 
-    const game_data = {
-        phase: phase,
-        score: score,
-    };
-
     var game_id = session_id + "-" + String(game_number).padStart(2, '0');
 
     const updates = {};
-    updates['/games/' + game_id] = game_data;
+    updates['/games/' + game_id + "/phase"] = phase;
+    updates['/games/' + game_id + "/score"] = score;
 
     return update(ref(db), updates);
 }
