@@ -211,6 +211,12 @@ h3 {
   border-radius: 20px;
 }
 
+@media only screen and (max-width: 767px) {
+    #timer {
+      margin-top: -175px;
+    }
+}
+
 .image_1 {
     width: 100%;
     float: left;
