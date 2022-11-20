@@ -159,6 +159,13 @@ h3 {
     z-index: 100;
 }
 
+.languages {
+    text-align: right;
+    width: 66%;
+    font-size: 35px;
+    line-height: 30px;
+}
+
 .person_item {
   width: 20%;
   float: left;
