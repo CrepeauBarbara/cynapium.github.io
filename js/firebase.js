@@ -98,7 +98,7 @@ function populateScoreChart(scores, score_user, best_score_user) {
             dtick: 1,
         },
         yaxis: {
-            title: 'Number of People'
+            title: LABEL_CHART_XAXIS[LANG]
         },
     };
 
@@ -121,7 +121,11 @@ function populateScoreChart(scores, score_user, best_score_user) {
     }
 
     var percent_better_than = Math.ceil(100 * number_games_inferior_score / (number_games_total - 1));
-    $("#percent_score_label").html("You did better than <strong>" + percent_better_than + "%</b> of people!");
+    if (LANG === "FR") {
+        $("#percent_score_label").html("Tu as fait mieux que <strong>" + percent_better_than + "%</b> de personnes !");
+    } else {
+        $("#percent_score_label").html("You did better than <strong>" + percent_better_than + "%</b> of people!");
+    }
 }
 
 export function getAllGames() {

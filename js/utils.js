@@ -52,7 +52,7 @@ function initMemorization() {
     console.log("> initMemorization");
     // Show instructions if it was hidden
     $( "#instructions" ).show();
-    $( ".title" ).html("Memorization");
+    $( ".title" ).html(LABEL_MEMORIZATION[LANG]);
     $( "#timer" ).show();
 
     $( "#results_container" ).hide();
@@ -62,8 +62,14 @@ function initMemorization() {
     if (clipboard !== undefined) { clipboard.destroy(); }
 
     // Shuffle arrays to get names, faces and genders in random order
-    shuffle(FR_female_names);
-    shuffle(FR_male_names);
+    var female_names = EN_female_names;
+    var male_names = EN_male_names;
+    if (LANG === "FR") {
+        female_names = FR_female_names;
+        male_names = FR_male_names;
+    }
+    shuffle(female_names);
+    shuffle(male_names);
     shuffle(female_faces);
     shuffle(male_faces);
     shuffle(genders);
@@ -72,11 +78,11 @@ function initMemorization() {
     people = [];
     for (var i = 0 ; i < nb_faces ; i++) {
         if (genders[i] == "F") {
-            var person_name = FR_female_names[i];
+            var person_name = female_names[i];
             var person_id = String(female_faces[i]).padStart(3, '0');
             var person_face = 'images/faces/females/' + genders[i] + "-" + person_id + ".jpeg";
         } else {
-            var person_name = FR_male_names[i];
+            var person_name = male_names[i];
             var person_id = String(male_faces[i]).padStart(3, '0');
             var person_face = 'images/faces/males/' + genders[i] + "-" + person_id + ".jpeg";
         }
@@ -153,7 +159,7 @@ function startRecall() {
     $( "#first input" ).focus();
 
     // Update the timer
-    $( ".title" ).html("Recall");
+    $( ".title" ).html(LABEL_RECALL[LANG]);
     getStarted(COUNTER_RECALL_PHASE);
 
     // Init button to check results before end of timer
@@ -175,7 +181,7 @@ function checkResults() {
     phase = 2;
 
     // Update title, hide timer & button "check results"
-    $( ".title" ).html("Results");
+    $( ".title" ).html(LABEL_RESULTS[LANG]);
     reset();
     $("#timer").hide();
     $("#btn_results").hide();
@@ -228,12 +234,13 @@ function checkResults() {
 
     clipboard = new ClipboardJS('#linkShare', {
             text: function (trigger) {
-                return `Are you great with faces? Try to beat my score of ` + best_session_score + ` &#x1F9D1 at http://memory-challenge.com!`;
+                if (LANG === "FR") {
+                    return `Es-tu bon pour reconnaître les noms et visages? Essaie de battre mon score de ` + best_session_score + ` sur http://memory-challenge.com!`;
+                } else {
+                    return `Are you great with people's names? Try to beat my score of ` + best_session_score + ` at http://memory-challenge.com!`;
+                }
             },
         });
-
-    //var timestamp = Math.floor(Date.now() / 1000);
-    //var gameKey = writeNewGame("u0", timestamp, score, all_expected, all_recalled, all_faces);
 
     // Update view
     $("#results_container").show();
@@ -338,9 +345,6 @@ function shuffle(array) {
   return array;
 }
 
-function copyToClipboard(copyText) {
-}
-
 /******************************************************************************
  *                             WHEN DOCUMENT READY                            *
  ******************************************************************************/
@@ -351,5 +355,6 @@ $( document ).ready(function() {
 
     // Intialize all the memorization phase in advance
     startGame();
-    copyToClipboard("Shared!");
+    console.log('>> Update title to: ' + LANG + " - " + LABEL_RECALL[LANG]);
+    console.log(LABEL_RECALL);
 });
