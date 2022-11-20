@@ -204,8 +204,8 @@ function checkResults() {
         person_item.find(".person_name div").html(recalled_name);
 
         // Get result and add recalled incorrect name in hover
-        var expected_name_normalized = expected_name.normalize('NFD').replace(/\p{Diacritic}/gu, "");
-        var recalled_name_normalized = recalled_name.normalize('NFD').replace(/\p{Diacritic}/gu, "");
+        var expected_name_normalized = expected_name.normalize('NFD').replace(/\p{Diacritic}/gu, "").trim();
+        var recalled_name_normalized = recalled_name.normalize('NFD').replace(/\p{Diacritic}/gu, "").trim();
         if (expected_name_normalized.toLowerCase() == recalled_name_normalized.toLowerCase()) {
             person_item.addClass("result_success");
             score++;
@@ -228,8 +228,7 @@ function checkResults() {
 
     clipboard = new ClipboardJS('#linkShare', {
             text: function (trigger) {
-                return `Try to beat my score at memory-challenge.com:
-  🏆 ` + best_session_score + ` people recognized out of 15!`;
+                return `Are you great with faces? Try to beat my score of ` + best_session_score + ` &#x1F9D1 at http://memory-challenge.com!`;
             },
         });
 
