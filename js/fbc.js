@@ -47,7 +47,8 @@ function populateScoreChart(scores, score_user, best_score_user) {
     var labels = Array.from(Array(16).keys());
     console.log(scores);
     var preset_scores = Array(16).fill(0);
-    //preset_scores = [0, 10, 45, 73, 178, 259, 341, 274, 214, 152, 73, 49, 27, 10, 4, 1];
+    //               0 | 1 | 2 | 3 |  4 |  5 |  6 |  7 |  8 |  9 | 10 | 11 | 12 | 13 | 14 | 15
+    preset_scores = [0,  6, 37, 72,  118, 142, 157, 174, 138, 99, 58,  25,  3,  1,   0,   0];
     var bar_colors = Array(16).fill("rgba(27, 100, 154, 0.7)");
     bar_colors[best_score_user] = "rgba(27, 100, 154, 1)";
     bar_colors[score_user] = "#008708";
@@ -55,6 +56,9 @@ function populateScoreChart(scores, score_user, best_score_user) {
     var stats_scores = preset_scores.map(function (num, idx) {
         return num + scores[idx];
     });
+
+    console.log(preset_scores);
+    console.log(stats_scores);
 
     var trace1 = {
         type: 'bar',
@@ -112,12 +116,12 @@ function populateScoreChart(scores, score_user, best_score_user) {
 
 
     // Calculate "you are better than x% of people!"
-    const number_games_total = scores.reduce((accumulator, value) => {
+    const number_games_total = stats_scores.reduce((accumulator, value) => {
         return accumulator + value;
     }, 0);
     var number_games_inferior_score = 0;
     for (var i = 0 ; i < best_score_user ; i++) {
-        number_games_inferior_score += scores[i];
+        number_games_inferior_score += stats_scores[i];
     }
 
     var percent_better_than = Math.ceil(100 * number_games_inferior_score / (number_games_total - 1));

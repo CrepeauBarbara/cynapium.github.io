@@ -6,7 +6,7 @@ import {
     writeNewSessionGame,
     updateGame,
     updateGameClicks,
-} from "./firebase.js"
+} from "./fbc.js"
 
 var people = [];
 
