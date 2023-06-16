@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <!-- Material components -->
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <!-- Material icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;900&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js"
+            integrity="sha256-a2yjHM4jnF9f54xUQakjZGaqYs/V1CYvWpoqZzC2/Bw="
+            crossorigin="anonymous"></script>
+
+    <script type="module" src="firebase.js"></script>
+    <script src="md5.min.js"></script>
+</head>
+<body>
+
+    <div id="page">
+
+        <h1>Contestations</h1>
+
+        <select name="languages" id="languageFilter">
+            <option value="all">All Languages</option>
+        </select>
+
+        <!-- TABLEAU AVEC LES CONTESTATIONS -->
+
+
+        <table id="contestationsTable" class="table table-borderless table-striped table-earning">
+            <thead>
+                <tr>
+                    <th>Contestant</th>
+                    <th>Words indexes</th>
+                    <th>Comments</th>
+                    <th>Link to screenshots</th>
+                </tr>
+            </thead>
+            <tbody id="table_contestation"></tbody>
+        </table>
+
+    </div>
+</body>
+
+<script type="module" src="contestations.js"></script>
+
+</html>

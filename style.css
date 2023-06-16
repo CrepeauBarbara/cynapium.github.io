@@ -1,0 +1,441 @@
+﻿body {
+	background: #444444;
+	font-family: 'Source Sans Pro', sans-serif;
+}
+
+div#page {
+	background: white;
+	max-width: 1180px;
+	margin-left: auto;
+	margin-right: auto;
+	height: 100%;
+	padding: 20px;
+}
+
+h1 {
+	text-align: center;
+	font-variant: small-caps;
+	font-family: 'Source Code Pro', monospace;
+	font-size: 62px;
+	letter-spacing: -2px;
+	color: #444;
+}
+
+h2 {
+	color: #3E407B;
+	text-transform: uppercase;
+	margin-top: 40px;
+}
+
+a {
+	color: #3E407B;
+	text-decoration: none;
+	text-transform: uppercase;
+	font-size: 13px;
+	font-weight: bold;
+}
+a:hover {
+	color: #6f71b0;
+}
+a.locked_link {
+    color: #AAAAAA;
+    text-decoration: line-through;
+}
+
+span.hide {
+    display: none;
+}
+.not_an_event {
+    background-color: #D0D1DF;
+}
+.event_label {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: bold;
+}
+#contestationsTable {
+    font-size: .85em;
+}
+
+#contestation_form select {
+    text-align: left;
+}
+#contestation_form textarea {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-family: "Open Sans", sans-serif;
+	font-size: .85em;
+}
+table#contestation_form {
+    margin-top: 20px;
+    display: none;
+}
+table#contestation_form tr {
+    border: 0px solid #ddd!important;
+}
+#event_result_info {
+    color: green;
+    opacity: 0;
+    font-size: 0.85em;
+}
+#contestation_info {
+    text-align: left;
+    color: green;
+    font-size: 0.85em;
+}
+.msg_error {
+    color: darkred!important;
+}
+
+.mandatory:after {
+    color: red;
+    content: ' *';
+    padding-right: .3em;
+    font-weight: bold;
+}
+
+.contestation_title {
+    color: #3E407B;
+    letter-spacing: 0px;
+    font-size: 1.5em;
+}
+
+/*****
+
+	LOGIN
+
+******/
+
+#login_info {
+	text-align: center;
+	padding: 10px;
+}
+
+#competitor_name {
+	text-align: center;
+	font-weight: bold;
+}
+
+#epreuve_code {
+}
+
+.event_done::before {
+	content: '\2705  ';
+}
+
+.wrong_password {
+    border: 1px solid red !important;
+}
+
+
+
+/* Full-width input fields */
+input[type=text], input[type=password] {
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	box-sizing: border-box;
+}
+input.event_time_input {
+	width: auto;
+}
+input.event_admin_input {
+    margin: 10px;
+	padding: 5px;
+    text-align: center;
+}
+input.admin_input_changed {
+    border: 1px solid #237B2C;
+    background-color: #F1F9F1;
+}
+
+/* Set a style for all buttons */
+button {
+	background-color: #3E407B;
+	color: white;
+	padding: 14px 20px;
+	margin: 8px 0;
+	border: none;
+	cursor: pointer;
+	width: 70%;
+}
+
+	button:hover {
+		opacity: 0.8;
+	}
+
+    button.validate_admin_changes {
+        background-color: #237B2C;
+    }
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+	width: auto;
+	background-color: #f44336;
+	float: right;
+}
+.closebtn {
+	width: 70%;
+	background-color: #f44336;
+    padding: 10px;
+}
+
+/* Center the image and position the close button */
+.imgcontainer {
+	text-align: center;
+	margin: 24px 0 12px 0;
+	position: relative;
+}
+
+img.avatar {
+	width: 40%;
+	border-radius: 50%;
+}
+
+.container {
+	padding: 16px;
+}
+
+span.psw {
+	float: right;
+	padding-top: 16px;
+}
+
+/* The Modal (background) */
+.modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0,0,0); /* Fallback color */
+	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+	background-color: #fefefe;
+	margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+	border: 1px solid #888;
+	width: 40%; /* Could be more or less, depending on screen size */
+	min-width: 300px;
+}
+
+/* The Close Button (x) */
+.close {
+	position: absolute;
+	right: 25px;
+	top: 0;
+	color: #000;
+	font-size: 35px;
+	font-weight: bold;
+}
+
+	.close:hover,
+	.close:focus {
+		color: red;
+		cursor: pointer;
+	}
+
+/* Add Zoom Animation */
+.animate {
+	-webkit-animation: animatezoom 0.6s;
+	animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+	from {
+		-webkit-transform: scale(0)
+	}
+
+	to {
+		-webkit-transform: scale(1)
+	}
+}
+
+@keyframes animatezoom {
+	from {
+		transform: scale(0)
+	}
+
+	to {
+		transform: scale(1)
+	}
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+	span.psw {
+		display: block;
+		float: none;
+	}
+
+	.cancelbtn {
+		width: 100%;
+	}
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(1em);
+  }
+  40% {
+    transform: translate(-1em);
+  }
+  60% {
+    transform: translate(1em);
+  }
+  80% {
+    transform: translate(-1em);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+.wrong_password {
+    border: 1px solid red!important;
+    animation-name: shake;
+    animation-duration: 1s;
+    animation-delay: 0s;
+}
+
+/*****
+
+	TABLEAU
+
+******/
+
+
+table {
+	border: 1px solid #ccc;
+	border-collapse: collapse;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	table-layout: fixed;
+}
+
+	table caption {
+		font-size: 1.5em;
+		margin: .5em 0 .75em;
+	}
+
+	table tr {
+		background-color: #f8f8f8;
+		border: 1px solid #ddd;
+		padding: .35em;
+        text-align: center;
+	}
+
+	table th,
+	table td {
+		padding: .625em;
+		text-align: center;
+	}
+    td.subtitle {
+        padding: 0 0 .625em 0;
+        font-size: .85em;
+        font-style: italic;
+        color: #888;
+    }
+    td.label {
+        padding: 0 0 .625em 0;
+        font-size: .85em;
+        font-style: italic;
+        color: #444;
+        text-align: right;
+    }
+
+	table th {
+		font-size: .85em;
+		letter-spacing: .1em;
+		text-transform: uppercase;
+	}
+
+@media screen and (max-width: 600px) {
+	table {
+		border: 0;
+	}
+
+		table caption {
+			/*font-size: 1.3em;*/
+		}
+
+		table thead {
+			border: none;
+			clip: rect(0 0 0 0);
+			height: 1px;
+			margin: -1px;
+			overflow: hidden;
+			padding: 0;
+			position: absolute;
+			width: 1px;
+		}
+
+		table tr {
+			border-bottom: 3px solid #ddd;
+			display: block;
+			margin-bottom: .625em;
+		}
+
+		table td {
+			border-bottom: 1px solid #ddd;
+			display: block;
+			/*font-size: .8em;*/
+			text-align: center;
+			width: 95%!important;
+		}
+
+			table td::before {
+				/*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+				content: attr(data-label);
+				float: left;
+				font-weight: bold;
+				text-transform: uppercase;
+			}
+
+			table td:last-child {
+				border-bottom: 0;
+			}
+}
+
+#competitor_info {
+    position:relative;
+}
+.competitor_options {
+    position: absolute;
+    bottom: -15px;
+    left: 0px;
+    font-size: 10px;
+    font-weight: 700;
+}
+.competitor_options a {
+    text-align: center;
+    font-size: 10px;
+    color: #3E407B;
+
+}
+
+
+/* general styling */
+body {
+	font-family: "Open Sans", sans-serif;
+	line-height: 1.25;
+}
