@@ -1,0 +1,234 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <!-- Material components -->
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <!-- Material icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;900&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha384-UG8ao2jwOWB7/oDdObZc6ItJmwUkR/PfMyt9Qs5AwX7PsnYn1CRKCTWyncPTWvaS"
+        crossorigin="anonymous">
+    </script>
+
+    <script type="module" src="firebase.js"></script>
+    <script src="md5.min.js"></script>
+</head>
+<body>
+
+    <div id="page">
+
+        <h1>2023 French Memory Open</h1>
+
+        <!-- LOGIN -->
+        <div id="login_info">
+            <!-- Login button -->
+            <button id="show_login_btn" style="width:30%;">Login</button>
+
+            <!-- After login information -->
+            <table id="competitor_info" style="display: none;" class="table table-borderless table-striped table-earning">
+                <tbody>
+                    <tr class="result_form">
+                        <td>
+                            <div id="competitor_name"></div>
+                            <div class="competitor_options">
+                                <a id="logout_link" href="#">LOGOUT</a>
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <input id="event_result_code" type="text" placeholder="Click on event to submit code" />
+                        </td>
+                        <td>
+                            <button id="submit_result_code" type="submit">Submit</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="" colspan="4"><div id="event_result_info">.</div></td>
+                    </tr>
+                </table>
+                <!-- After login information -->
+                <table id="contestation_form" class="table table-borderless table-striped table-earning">
+                    <tbody>
+
+                    <!-- CONTESTATIONS -->
+                    <tr>
+                        <th colspan="4" class="contestation_title">Words Contestation</th>
+                    </tr>
+                    <tr>
+                        <td class="subtitle" colspan="4">
+                            If you would like to contest your 5m Words result, please submit the form below as well.<br/>
+                            For links to screenshots, you can use <a href="https://imgbb.com/">https://imgbb.com</a>.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label mandatory">Language</td>
+                        <td>
+                            <select id="contestation_language" name="contestation_language">
+                                <option value="">-- Select a language --</option>
+                        		<option value="English">English</option>
+                                <option value="Arabic">Arabic</option>
+                                <option value="Azeri">Azeri</option>
+                                <option value="French">French</option>
+                                <option value="German">German</option>
+                                <option value="Hebrew">Hebrew</option>
+                                <option value="Italian">Italian</option>
+                                <option value="Japanese">Japanese</option>
+                                <option value="Mongolian">Mongolian</option>
+                                <option value="Ukrainian">Ukrainian</option>
+                                <option value="Spanish">Spanish</option>
+                                <option value="Swedish">Swedish</option>
+                                <option value="Russian">Russian</option>
+                            </select>
+                        </td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Word index <span class="mandatory"></span> and comments</td>
+                        <td>
+                            <textarea id="contestation_indexes" type="text" placeholder="Which words numbers you want to be checked"></textarea>
+                        </td>
+                        <td colspan="2">
+                            <textarea id="contestation_comments" type="text" placeholder="Any other comments"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <div style="padding: 10px 0px;" class="mandatory">Screenshot #1</div>
+                            <div style="padding: 10px 12px; margin-top: 20px;">Screenshot #2</div>
+                        </td>
+                        <td colspan="2">
+                            <input id="contestation_screenshot_1" type="text" placeholder="Link to the first screenshot" />
+                                <input id="contestation_screenshot_2" type="text" placeholder="Link to the first screenshot" />
+                        </td>
+                        <td>
+                            <button id="submit_contestation" type="submit">Submit<br/>Contestation</button>
+                            <br/>
+                            <button id="close_contestation" class="closebtn" type="submit">Close</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="contestation_info" colspan="4"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="login_popup" class="modal">
+            <form class="modal-content animate" action="/action_page.php" method="post">
+                <div class="container">
+                    <label for="uname"><b>Username</b></label>
+                    <input id="login_username" type="text" placeholder="Enter Username" name="uname" required>
+
+                    <label for="psw"><b>Password</b></label>
+                    <input id="login_password" type="password" placeholder="Enter Password" name="psw" required>
+
+                    <button type="submit" id="login_btn">Login</button>
+                    <button type="button" id="cancel_btn" class="cancelbtn">Cancel</button>
+                    <!--<label>
+                        <input type="checkbox" checked="checked" name="remember"> Remember me
+                    </label>--->
+                </div>
+                <!--
+                <div class="container" style="background-color:#f1f1f1">
+                    <button type="button" onclick="document.getElementById('login_popup').style.display='none'" class="cancelbtn">Cancel</button>
+                    <span class="psw">Forgot <a href="#">password?</a></span>
+                </div>-->
+            </form>
+        </div>
+
+        <!-- TABLEAU AVEC LES EPREUVES -->
+
+        <h2>Friday, 30th of June</h2>
+
+        <table id="myTable" class="table table-borderless table-striped table-earning">
+            <thead>
+                <tr>
+                    <th>order</th>
+                    <th>event</th>
+                    <th>link to event</th>
+                </tr>
+            </thead>
+            <tbody id="table_schedule_day_1"></tbody>
+        </table>
+
+        <h2>Saturday, 1st of July</h2>
+
+        <table id="myTable" class="table table-borderless table-striped table-earning">
+            <thead>
+                <tr>
+                    <th>order</th>
+                    <th>event</th>
+                    <th>link to event</th>
+                </tr>
+            </thead>
+            <tbody id="table_schedule_day_2"></tbody>
+        </table>
+    </div>
+</body>
+
+<script type="module" src="memory.js"></script>
+<script type="module" src="login.js"></script>
+
+<script>
+$( document ).ready(function() {
+    // Get the modal
+    var modal = document.getElementById('login_popup');
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+});
+</script>
+</html>
+
+<!--<script type="module">
+
+  // Import the functions you need from the SDKs you need
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+
+  // TODO: Add SDKs for Firebase products that you want to use
+
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+
+  // Your web app's Firebase configuration
+
+  const firebaseConfig = {
+
+    apiKey: "AIzaSyBYQIhx0CCVmwv6Hl7R62TfMmmFnHn6q9o",
+
+    authDomain: "asmemoire-9da2a.firebaseapp.com",
+
+    databaseURL: "https://asmemoire-9da2a-default-rtdb.europe-west1.firebasedatabase.app",
+
+    projectId: "asmemoire-9da2a",
+
+    storageBucket: "asmemoire-9da2a.appspot.com",
+
+    messagingSenderId: "39222709500",
+
+    appId: "1:39222709500:web:3445a47bcd34c910461b79"
+
+  };
+
+
+  // Initialize Firebase
+
+  const app = initializeApp(firebaseConfig);
+
+</script>-->
