@@ -142,11 +142,7 @@ function addZeroBefore(i, n) {
 
 export function addScore(user_name, event_name, result_code) {
     let dt = new Date();
-    let timestamp = dt.toLocaleDateString('us-US')  + " " +
-            addZeroBefore(2, dt.getHours()) + ":" +
-            addZeroBefore(2, dt.getMinutes()) + ":" +
-            addZeroBefore(2, dt.getSeconds()) + ":" +
-            addZeroBefore(3, dt.getMilliseconds());
+    let timestamp = dt.toISOString();
 
     const score_data = {
         user: user_name,
@@ -162,6 +158,39 @@ export function addScore(user_name, event_name, result_code) {
     updates['scores/' + score_key] = score_data;
     return update(ref(database), updates);
 }
+
+function updateScoreDate() {
+    const scoresRef = query(ref(database, 'scores/'));
+    let scoresRecords = [];
+
+	get(scoresRef).then((snapshot) => {
+		if (snapshot.exists()) {
+            snapshot.forEach(function(childSnapshot) {
+                scoresRecords.push({key: childSnapshot.key, val: childSnapshot.val()});
+            });
+		} else {
+			console.log("No data available");
+		}
+
+        if (scoresRecords.length > 0) {
+            updateScoreDateISO(scoresRecords);
+        }
+	}).catch((error) => {
+		console.error(error);
+	});
+}
+
+function updateScoreDateISO(scores) {
+    var updates = {}
+    for (var i in scores) {
+        var score = scores[i];
+        //score.timestamp = "2023-06-30T05:00:00.001Z";
+        updates["scores/" + score.key + "/timestamp"] = "2023-06-30T05:00:00.001Z"
+    }
+    return update(ref(database), updates);
+}
+
+
 
 export function addWordContestation(
     user_name,
@@ -187,5 +216,30 @@ export function addWordContestation(
     console.log(contestation_key);
     const updates = {};
     updates['contestations/' + contestation_key] = contestation_data;
+    return update(ref(database), updates);
+}
+
+function createUser(name, login, password, md5_password, md5_cookie) {
+    const user_data = {
+        name: name,
+        password: md5_password,
+        cookie: md5_cookie,
+        admin: false
+    };
+
+    const updates = {};
+    updates['users/' + login] = user_data;
+    return update(ref(database), updates);
+}
+function createAdmin(name, login, password, md5_password, md5_cookie) {
+    const user_data = {
+        name: name,
+        password: md5_password,
+        cookie: md5_cookie,
+        admin: true
+    };
+
+    const updates = {};
+    updates['users/' + login] = user_data;
     return update(ref(database), updates);
 }
