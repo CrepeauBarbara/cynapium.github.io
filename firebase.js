@@ -19,8 +19,8 @@ import {
 } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js';
 
 import {
-	check_login,
-    user_login
+	checkLogin,
+    userLogin
 } from "./login.js";
 
 import {
@@ -34,13 +34,13 @@ import {
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBYQIhx0CCVmwv6Hl7R62TfMmmFnHn6q9o",
-  authDomain: "asmemoire-9da2a.firebaseapp.com",
-  databaseURL: "https://asmemoire-9da2a-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "asmemoire-9da2a",
-  storageBucket: "asmemoire-9da2a.appspot.com",
-  messagingSenderId: "39222709500",
-  appId: "1:39222709500:web:3445a47bcd34c910461b79"
+  apiKey: /* apiKey */,
+  authDomain: /* authDomain */,
+  databaseURL: /* databaseURL */,
+  projectId: /* projectId */,
+  storageBucket: /* storageBucket */,
+  messagingSenderId: /* messagingSenderId */,
+  appId: /* appId */
 };
 
 // Initialize Firebase
@@ -54,7 +54,7 @@ export function getUserPassword(username, password_entered) {
 	get(child(ref(database), `users/` + username)).then((snapshot) => {
 		if (snapshot.exists()) {
 			// Check passwords
-			check_login(password_entered, snapshot.val());
+			checkLogin(password_entered, snapshot.val());
 		} else {
 			console.log("No data available");
 		}
@@ -121,7 +121,7 @@ export function getUserByCookie(cookie) {
 		}
 
         if (userRecords.length == 1) {
-            user_login(userRecords[0], false);
+            userLogin(userRecords[0], false);
         }
 	}).catch((error) => {
 		console.error(error);

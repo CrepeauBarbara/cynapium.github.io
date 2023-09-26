@@ -13,21 +13,21 @@ import {
 const login_cookie_name = "french_memory_open_2023";
 
 /**
- *
- *
+  * Check if there is a login cookie on this browser and check it against the
+  * cookie stored in the database.
  */
-function check_authentification() {
+function checkAuthentification() {
     let login_cookie = getLoginCookie();
     if (login_cookie == "" || login_cookie == null) {
         return false;
     }
 
+    // Get the user cookie from the database.
     getUserByCookie(login_cookie);
 }
 
 /**
- *
- *
+ * When user clicks on login button.
  */
 function login() {
     var user_name = document.getElementById("login_username").value;
@@ -35,22 +35,27 @@ function login() {
 	getUserPassword(user_name, password_entered);
 }
 
+/**
+ * When user clicks on "logout" button.
+ */
 function logout() {
     eraseCookie();
     location.reload();
 }
 
 /**
- *
- *
+ * Check if the password is correct.
+
+ * @param {string} password_entered -
+ * @param {User record from db} user_record -
  */
-export function check_login(password_entered, user_record) {
-	console.log("========== check_login()");
+export function checkLogin(password_entered, user_record) {
+	console.log("========== checkLogin()");
     // Check if the password is correct
     console.log("pwd: "+ user_record.password.trim());
     console.log("pwd: "+ password_entered.trim());
     if (user_record.password.trim() == password_entered.trim()) {
-        user_login(user_record, true);
+        userLogin(user_record, true);
     } else {
         // If login failed, let the user know
         let login_pwd = document.getElementById("login_password");
@@ -59,11 +64,13 @@ export function check_login(password_entered, user_record) {
 }
 
 /**
- *
+ * Log in the user once everything has been verified.
+ 
+ * @param {User record from db} user_record -
  * @param {Bool} set_cookie -
  */
-export function user_login(user_record, set_cookie) {
-	console.log("========== user_login()");
+export function userLogin(user_record, set_cookie) {
+	console.log("========== userLogin()");
     // Hide login pop-up and button.
     hide_login_popup();
     document.getElementById("show_login_btn").style.display='none';
@@ -94,6 +101,10 @@ function setLoginCookie(cookie_value) {
   let expires = "expires="+ expiration_date.toUTCString();
   document.cookie = login_cookie_name + "=" + cookie_value + ";" + expires + ";path=/";
 }
+
+/**
+ * Look into the browser's cookies to find the login cookie.
+ */
 function getLoginCookie() {
   let name = login_cookie_name + "=";
   let decodedCookie = decodeURIComponent(document.cookie);
@@ -119,6 +130,7 @@ function show_login_popup() {
 function hide_login_popup() {
 	document.getElementById('login_popup').style.display='none';
 }
+
 
 /**
  * Update the page display to allow update of times, names and link of events.
@@ -162,6 +174,10 @@ function switchToAdminView() {
     $('.validate_admin_changes').click(validateAdminChanges);
 }
 
+
+/**
+ * When admin validates change, write those in the db.
+ */
 function validateAdminChanges() {
     //
     const event_updates = {};
@@ -175,7 +191,6 @@ function validateAdminChanges() {
     });
 
     updateRecords(event_updates);
-
 
     // Remove the style class that indicates change on the input.
     $('.event_admin_input').removeClass('admin_input_changed');
@@ -220,5 +235,5 @@ $( document ).ready(function() {
 
     // Check if there is a login cookie on this browser, in which case we can
     // skip the login phase and consider the user already authenticated.
-    check_authentification();
+    checkAuthentification();
 });

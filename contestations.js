@@ -1,11 +1,17 @@
 import { loadContestations } from "./firebase.js"
 
+/**
+ * Given an array of contestations coming from the db, display them in the table
+ * and create the language filter dropdown.
+ * @param { [contestation db object] } contestations
+ */
 export function displayContestationData(contestations) {
     console.log("displayContestationData(contestations: " + contestations.length + " elements)");
     let event_id = 0;
     let contestationsTable = document.getElementById("contestationsTable");
     let allLanguages = new Set();
 
+    // Populate the contestation table
     contestations.forEach(function callback(contestation, index) {
         let row = contestationsTable.insertRow();
         row.id = contestation.language;
@@ -36,6 +42,10 @@ export function displayContestationData(contestations) {
     });
 }
 
+/**
+ * Only display contestations in the given languages
+ * @param {string} language - Name of the chosen language to filter on
+ */
 function filterByLanguage(language) {
     console.log("filterByLanguage(" + language + ")");
 

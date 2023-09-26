@@ -10,9 +10,7 @@ const competitors = [
 var current_event = null;
 
 /**
- *
- *
- *
+ * Submit a contestation and display an error/success message.
  */
 export function submitContestation() {
     console.log("submitContestation()");
@@ -23,13 +21,11 @@ export function submitContestation() {
      // Submit result code
     let language = $('#contestation_language').val();
     if (language == "") {
-        // TODO error message
         errors.push("- Select a language.");
     }
 
     let word_indexes = $('#contestation_indexes').val();
     if (word_indexes == "") {
-        // TODO error message
         errors.push("- Specify the contested word indexes.");
     }
 
@@ -40,9 +36,10 @@ export function submitContestation() {
         $('#contestation_screenshot_2').val() || ""
     ];
     if (screenshots[0] == "" && screenshots[1] == "") {
-        // TODO error message
         errors.push("- Provide one or more screenshot links.");
     }
+
+    // Check for errors
     if (errors.length > 0) {
         let error_message = errors.join('<br/>');
         $('#contestation_info').html(
@@ -68,9 +65,7 @@ export function submitContestation() {
 };
 
 /**
- *
- *
- *
+ * Submit a result code for a given event and display an error/success message.
  */
 export function submitResultCode() {
     console.log("submitResultCode()");
